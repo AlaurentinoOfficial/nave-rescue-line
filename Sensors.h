@@ -6,6 +6,10 @@
 
 #include "Values.h"
 
+#define COLOR_WHITE 0
+#define COLOR_GREEN 1
+#define COLOR_BLACK 2
+
 void SensorsSetup()
 {
   pinMode(S0, OUTPUT);
@@ -35,6 +39,18 @@ int* ColorRaw(int port)
 
   int colors[] = {red, green, blue};
   return colors;
+}
+
+unsigned short Color(int port)
+{
+  int* rgb = ColorRaw(port);
+
+  if(rgb[0] < 100 && rgb[1] < 100 && rgb[2] < 100)
+    return COLOR_BLACK;
+  else if(rgb[1] > rgb[0] && rgb[1] > rgb[0])
+    return COLOR_GREEN;
+
+  return COLOR_WHITE;
 }
 
 double Ultrasonic(int port)
