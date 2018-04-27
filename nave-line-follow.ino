@@ -1,18 +1,18 @@
+#include "Values.h"
 #include "MotorShield.h"
 #include "Sensors.h"
 
 bool inRescueArea = false;
 
 // Motor map
-//MotorShield Motors(1, 2, 3, 4);
+MotorShield Motors(MOTOR_LEFT1, MOTOR_LEFT2, MOTOR_RIGHT1, MOTOR_RIGHT2);
 
 void setup() {
   Serial.begin(9600);
   Serial.println("Started");
 
   // Configure the motors
-  //Motors.Setup();
-  //Motors.Stop();
+  Motors.Stop();
 }
 
 void loop() {
@@ -21,8 +21,4 @@ void loop() {
 }
 
 void lineFollow() {
-  Serial.print(Sensors::Ultrasonic(ULTRA_FRONT));
-  Serial.print(", ");
-  Serial.println(Sensors::Ultrasonic(ULTRA_LEFT));
-  delay(500);
 }

@@ -2,14 +2,14 @@
   #include "Arduino.h"
 #else
   #include "WProgram.h"
-#endif 
+#endif
 
-#define ULTRA_FRONT 7
-#define ULTRA_LEFT 6
-#define ULTRA_RIGHT 5
+#include "Values.h"
 
 class Sensors
 {
 public:
+  Sensors();
+  int* ColorRaw(int port);
   static double Ultrasonic(int port);
 };

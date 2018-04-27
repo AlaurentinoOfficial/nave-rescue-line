@@ -2,10 +2,6 @@
 
 MotorShield::MotorShield(int left1, int left2, int right1, int right2) : motorLeft1(left1), motorLeft2(left2), motorRight1(right1), motorRight2(right2)
 {
-}
-
-void MotorShield::Setup()
-{
   this->servo1.attach(9);
   this->servo2.attach(10);
 }
