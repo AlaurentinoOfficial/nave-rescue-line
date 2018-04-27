@@ -4,11 +4,14 @@
   #include "WProgram.h"
 #endif
 
+#include "Adafruit_VL53L0X.h"
 #include "Values.h"
 
 #define COLOR_WHITE 0
 #define COLOR_GREEN 1
 #define COLOR_BLACK 2
+
+Adafruit_VL53L0X distance = Adafruit_VL53L0X();
 
 void SensorsSetup()
 {
@@ -73,4 +76,17 @@ double Ultrasonic(int port)
     return 0.0;
   else
     return echo;
+}
+
+double Lazer()
+{
+  VL53L0X_RangingMeasurementData_t measure;
+    
+  Serial.print("Reading a measurement... ");
+  distance.rangingTest(&measure, false); // Pass in 'true' to get debug data printout!
+
+  if (measure.RangeStatus != 4) // Phase failures have incorrect data
+    return -1;
+
+  return measure.RangeMilliMeter;
 }

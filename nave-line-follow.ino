@@ -25,10 +25,9 @@ void loop() {
 void lineFollow() {
   unsigned short colorLeft = Color(COLOR_LEFT);
   unsigned short colorRight = Color(COLOR_RIGHT);
-  double ultra_front = Ultrasonic(ULTRA_FRONT);
 
   // Verify if there is a obstacle
-  if(ultra_front < 10)
+  if(Lazer() < 10)
   {
     Serial.println("Obstacle detected");
   }
