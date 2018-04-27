@@ -23,6 +23,8 @@
 //        Defines
 // **********************
 
+#define OBSTACLE_MAX_MM 10
+
 const uint8_t MOVE_POWER[2] = {200, 200};
 
 const uint8_t BLACK_WHITE[2] = {200, 150};

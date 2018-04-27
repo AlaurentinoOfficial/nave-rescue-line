@@ -27,7 +27,7 @@ void lineFollow() {
   unsigned short colorRight = Color(COLOR_RIGHT);
 
   // Verify if there is a obstacle
-  if(Lazer() < 10)
+  if(Lazer() < OBSTACLE_MAX_MM)
   {
     Serial.println("Obstacle detected");
   }
