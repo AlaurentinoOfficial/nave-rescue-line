@@ -1,8 +1,6 @@
-# ETE Cícero Dias - NAVE Recife
-# Steaph Copyright
+# Steaph RoboCup Robot
 
 ## Authors:
 * Anderson Laurentino
 
-That code is resposable to control the best robot
-of the OBR and Robocup Jr Rescue Line
+That code is responsable to control the best robot of the OBR and Robocup Jr Rescue Line
