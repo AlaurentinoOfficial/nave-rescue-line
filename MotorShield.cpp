@@ -1,5 +1,15 @@
 #include "MotorShield.h"
 
+uint8_t powerLimit(uint8_t power)
+{
+  if(power > 255)
+    return 255;
+  else if(power < 0)
+    return 0;
+  else
+    return power;
+}
+
 MotorShield::MotorShield(int left1, int left2, int right1, int right2) : motorLeft1(left1), motorLeft2(left2), motorRight1(right1), motorRight2(right2)
 {
   this->servo1.attach(9);
@@ -8,6 +18,9 @@ MotorShield::MotorShield(int left1, int left2, int right1, int right2) : motorLe
 
 void MotorShield::MoveFwd(uint8_t left, uint8_t right)
 {
+  left = powerLimit(left);
+  right = powerLimit(right);
+
   this->motorLeft1.setSpeed(left);
   this->motorLeft1.run(FORWARD);
 
@@ -23,6 +36,9 @@ void MotorShield::MoveFwd(uint8_t left, uint8_t right)
 
 void MotorShield::MoveBwd(unsigned char left, uint8_t right)
 {
+  left = powerLimit(left);
+  right = powerLimit(right);
+  
   this->motorLeft1.setSpeed(left);
   this->motorLeft1.run(BACKWARD);
 
@@ -39,6 +55,7 @@ void MotorShield::MoveBwd(unsigned char left, uint8_t right)
 void MotorShield::Rotate(unsigned short direction, uint8_t power, unsigned long delayTime)
 {
   this->Stop();
+  power = powerLimit(power);
 
   this->motorRight1.setSpeed(power);
   this->motorRight2.setSpeed(power);
@@ -68,15 +85,15 @@ void MotorShield::Rotate(unsigned short direction, uint8_t power, unsigned long 
 
 void MotorShield::Stop()
 {
-  this->motorLeft1.setSpeed(0x00);
+  this->motorLeft1.setSpeed(0);
   this->motorLeft1.run(RELEASE);
 
-  this->motorLeft2.setSpeed(0x00);
+  this->motorLeft2.setSpeed(0);
   this->motorLeft2.run(RELEASE);
 
-  this->motorRight1.setSpeed(0x00);
+  this->motorRight1.setSpeed(0);
   this->motorRight1.run(RELEASE);
 
-  this->motorRight2.setSpeed(0x00);
+  this->motorRight2.setSpeed(0);
   this->motorRight2.run(RELEASE);
 }
