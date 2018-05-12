@@ -122,7 +122,7 @@ uint8_t PID(uint8_t error)
 
 uint8_t CalculateError(uint8_t* colors)
 {
-  if(LineCompare(colors, "00001"))      return 4;
+       if(LineCompare(colors, "11110")) return 4;
   else if(LineCompare(colors, "11100")) return 3;
   else if(LineCompare(colors, "11101")) return 2;
   else if(LineCompare(colors, "11001")) return 1;
