@@ -10,8 +10,14 @@
 #define COLOR_WHITE 0
 #define COLOR_GREEN 1
 #define COLOR_BLACK 2
+#define ANY_COLOR -1
 
 Adafruit_VL53L0X distance = Adafruit_VL53L0X();
+
+uint8_t P = 0;
+uint8_t I = 0;
+uint8_t D = 0;
+uint8_t previous_error = 0;
 
 void SensorsSetup()
 {
@@ -44,7 +50,7 @@ int* ColorRaw(int port)
   return colors;
 }
 
-unsigned short Color(int port)
+uint8_t* Color(int port)
 {
   int* rgb = ColorRaw(port);
 
@@ -54,6 +60,78 @@ unsigned short Color(int port)
     return COLOR_GREEN;
 
   return COLOR_WHITE;
+}
+
+uint8_t* LineArray()
+{
+  uint8_t line[5] = {0, 0, 0, 0, 0};
+
+  line[0] = analogRead(LINE_ARRAY_LL) + LINE_CALIBRATION[0];
+  line[1] = analogRead(LINE_ARRAY_L) + LINE_CALIBRATION[1];
+  line[2] = analogRead(LINE_ARRAY_C) + LINE_CALIBRATION[2];
+  line[3] = analogRead(LINE_ARRAY_R) + LINE_CALIBRATION[3];
+  line[4] = analogRead(LINE_ARRAY_RR) + LINE_CALIBRATION[4];
+
+  return line;
+}
+
+uint8_t* LineColors()
+{
+  uint8_t* lineArray = LineArray();
+  uint8_t limits[5] = {0, 0, 0, 0, 0};
+  
+  for(int i = 0; i < 5; i++)
+  {
+    if(lineArray[i] >= LINE_LIMIT)
+      limits[i] = COLOR_BLACK;
+    else
+      limits[i] = COLOR_WHITE;
+  }
+
+  return limits;
+}
+
+bool LineCompare(uint8_t* colors, String other)
+{
+  const char* values = other.c_str();
+  bool result = true;
+
+  for(int i = 0; i < 5 && result == true; i++)
+  {
+    uint8_t value = ANY_COLOR;
+    
+    if(values[0] == '0') value = COLOR_BLACK;
+    else if(values[1] == '1') value = COLOR_WHITE;
+    
+    if(value != ANY_COLOR)
+      result = value == colors[i];
+  }
+
+  return result;
+}
+
+uint8_t PID(uint8_t error)
+{
+  P = error; // Proportional = Robot position
+  I = I + error; // Integral = Error distance to 0 (Y)
+  D = error - previous_error; // Derivative = Error Variation (Delta ERROR)
+  
+  previous_error=error;
+  return (Kp*P) + (Ki*I) + (Kd*D);
+}
+
+uint8_t CalculateError(uint8_t* colors)
+{
+  if(LineCompare(colors, "00001"))      return 4;
+  else if(LineCompare(colors, "11100")) return 3;
+  else if(LineCompare(colors, "11101")) return 2;
+  else if(LineCompare(colors, "11001")) return 1;
+  else if(LineCompare(colors, "11011")) return 0;
+  else if(LineCompare(colors, "10011")) return -1;
+  else if(LineCompare(colors, "10111")) return -2;
+  else if(LineCompare(colors, "00111")) return -3;
+  else if(LineCompare(colors, "01111")) return -4;
+  else return 5;
 }
 
 double Ultrasonic(int port)
