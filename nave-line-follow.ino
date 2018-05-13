@@ -38,32 +38,51 @@ void loop()
 void lineFollow()
 {
   uint8_t lineColors = LineColors();
-  uint8_t colorLeft = Color(COLOR_LEFT);
-  uint8_t colorRight = Color(COLOR_RIGHT);
 
   // Verify if there is a obstacle
   if(Lazer() < OBSTACLE_MAX_MM)
   {
     Serial.println("Obstacle detected");
   }
-  
-  // GREEN - WHITE
-  else if (colorLeft == COLOR_GREEN && colorRight == COLOR_WHITE)
+
+  // CROSS LINE
+  else if(LineCompare(lineColors, "00N00"))
   {
-    Serial.println("GREEN - WHITE");
+    Serial.print("CROSS LINE > ");
+    Motors.Stop();
+
+    uint8_t colorLeft = Color(COLOR_LEFT);
+    uint8_t colorRight = Color(COLOR_RIGHT);
+    
+    // GREEN - WHITE
+    if (colorLeft == COLOR_GREEN && colorRight == COLOR_WHITE)
+    {
+      Serial.println("GREEN - WHITE");
+      Motors.Rotate(COUTER_CLOCKWISE, ROTATE_90_DEGREES_TIME, ROTATE_90_DEGREES_PWR); // Rotate a 90 degrees
+    }
+  
+    // WHITE - GREEN
+    else if (colorLeft == COLOR_WHITE && colorRight == COLOR_GREEN)
+    {
+      Serial.println("WHITE - GREEN");
+      Motors.Rotate(CLOCKWISE, ROTATE_90_DEGREES_TIME, ROTATE_90_DEGREES_PWR); // Rotate a 90 degrees
+    }
+    else
+      Motors.MoveFwd(MOVE_POWER[0], MOVE_POWER[1]);
+  }
+
+  // BLACK - WHITE
+  else if(LineCompare(lineColors, "00111"))
+  {
+    Serial.println("BLACK - WHITE");
     Motors.Rotate(COUTER_CLOCKWISE, ROTATE_90_DEGREES_TIME, ROTATE_90_DEGREES_PWR); // Rotate a 90 degrees
   }
 
-  // WHITE - GREEN
-  else if (colorLeft == COLOR_WHITE && colorRight == COLOR_GREEN)
+  // WHITE - BLACK
+  else if(LineCompare(lineColors, "11100"))
   {
-    Serial.println("WHITE - GREEN");
-    Motors.Rotate(CLOCKWISE, ROTATE_90_DEGREES_TIME, ROTATE_90_DEGREES_PWR); // Rotate a 90 degrees
-  }
-
-  else if(LineCompare(lineColors, "11011") || LineCompare(lineColors, "N000N"))
-  {
-    Motors.MoveFwd(MOVE_POWER[0], MOVE_POWER[1]);
+    Serial.println("BLACK - WHITE");
+    Motors.Rotate(COUTER_CLOCKWISE, ROTATE_90_DEGREES_TIME, ROTATE_90_DEGREES_PWR); // Rotate a 90 degrees
   }
 
   else {

@@ -7,7 +7,6 @@
 #define MOTOR_RIGHT1 3
 #define MOTOR_RIGHT2 4
 
-#define ULTRA_FRONT 22
 #define ULTRA_LEFT 23
 #define ULTRA_RIGHT 24
 
@@ -24,8 +23,8 @@
 #define LINE_ARRAY_R A3
 #define LINE_ARRAY_RR A4
 
-uint8_t LINE_LIMIT = 600;
-uint8_t LINE_CALIBRATION[5] = {0, 0, 0, 0, 0};
+uint8_t LINE_LIMIT = 600; // Limit of BLACK and WHITE
+uint8_t LINE_CALIBRATION[5] = {0, 0, 0, 0, 0}; // LEFT, LEFT, CENTER, RIGHT, RIGHT
 
 
 // **********************
@@ -34,10 +33,7 @@ uint8_t LINE_CALIBRATION[5] = {0, 0, 0, 0, 0};
 
 #define OBSTACLE_MAX_MM 10
 
-uint8_t MOVE_POWER[2] = {200, 200};
-
-uint8_t BLACK_WHITE[2] = {200, 150};
-uint8_t WHITE_BLACK[2] = {150, 200};
+uint8_t MOVE_POWER[2] = {200, 200}; // LEFT - RIGHT
 
 uint8_t Kp = 1; // ERROR FACTOR -> Error multiplier
 uint8_t Ki = 1; // INTEGARTION FACTOR -> Period increase multiplier
