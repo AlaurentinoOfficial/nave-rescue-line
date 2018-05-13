@@ -104,18 +104,13 @@ uint8_t PID(uint8_t error)
   return uint8_t((Kp*P) + (Ki*I) + (Kd*D));
 }
 
-void PIDReset()
-{
-  I = 0;
-}
-
 uint8_t CalculateError(String colors)
 {
        if(LineCompare(colors, "11110")) return 4;
   else if(LineCompare(colors, "11100")) return 3;
   else if(LineCompare(colors, "11101")) return 2;
   else if(LineCompare(colors, "11001")) return 1;
-  else if(LineCompare(colors, "11011")) { PIDReset(); return 0; }
+  else if(LineCompare(colors, "11011")) return 0;
   else if(LineCompare(colors, "10011")) return -1;
   else if(LineCompare(colors, "10111")) return -2;
   else if(LineCompare(colors, "00111")) return -3;
