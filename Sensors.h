@@ -106,10 +106,7 @@ uint8_t PID(uint8_t error)
 
 void PIDReset()
 {
-  P = 0;
   I = 0;
-  D = 0;
-  previous_error = 0;
 }
 
 uint8_t CalculateError(String colors)
