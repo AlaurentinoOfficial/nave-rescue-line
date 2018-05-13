@@ -37,22 +37,26 @@ void loop()
 
 void lineFollow()
 {
+  // Get all line ir array values
   uint8_t lineColors = LineColors();
 
-  // Verify if there is a obstacle
-  if(Lazer() < OBSTACLE_MAX_MM)
+  // Get lazer distance in front
+  uint8_t lazer_distance = Lazer();
+
+  // OBSTACLE
+  if(lazer_distance < OBSTACLE_MAX_MM)
   {
-    Serial.println("Obstacle detected");
+    Serial.println("> OBSTACLE");
   }
 
   // CROSS LINE
   else if(LineCompare(lineColors, "00N00"))
   {
-    Serial.print("CROSS LINE > ");
+    Serial.print("> CROSS LINE > ");
     Motors.Stop();
 
-    uint8_t colorLeft = Color(COLOR_LEFT);
-    uint8_t colorRight = Color(COLOR_RIGHT);
+    uint8_t colorLeft = Color(COLOR_LEFT); // Measure the color
+    uint8_t colorRight = Color(COLOR_RIGHT); // Measure the color
     
     // GREEN - WHITE
     if (colorLeft == COLOR_GREEN && colorRight == COLOR_WHITE)
@@ -74,14 +78,14 @@ void lineFollow()
   // BLACK - WHITE
   else if(LineCompare(lineColors, "00111"))
   {
-    Serial.println("BLACK - WHITE");
+    Serial.println("> BLACK - WHITE");
     Motors.Rotate(COUTER_CLOCKWISE, ROTATE_90_DEGREES_TIME, ROTATE_90_DEGREES_PWR); // Rotate a 90 degrees
   }
 
   // WHITE - BLACK
   else if(LineCompare(lineColors, "11100"))
   {
-    Serial.println("BLACK - WHITE");
+    Serial.println("> BLACK - WHITE");
     Motors.Rotate(COUTER_CLOCKWISE, ROTATE_90_DEGREES_TIME, ROTATE_90_DEGREES_PWR); // Rotate a 90 degrees
   }
 

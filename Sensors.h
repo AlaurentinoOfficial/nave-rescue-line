@@ -28,6 +28,12 @@ void SensorsSetup()
 
   digitalWrite(S0,HIGH);
   digitalWrite(S1,LOW);
+
+  pinMode(LINE_ARRAY_LL, INPUT);
+  pinMode(LINE_ARRAY_L, INPUT);
+  pinMode(LINE_ARRAY_C, INPUT);
+  pinMode(LINE_ARRAY_R, INPUT);
+  pinMode(LINE_ARRAY_RR, INPUT);
 }
 
 int* ColorRaw(int port)
@@ -54,10 +60,8 @@ uint8_t* Color(int port)
 {
   int* rgb = ColorRaw(port);
 
-  if(rgb[0] < 100 && rgb[1] < 100 && rgb[2] < 100)
-    return COLOR_BLACK;
-  else if(rgb[1] > rgb[0] && rgb[1] > rgb[0])
-    return COLOR_GREEN;
+  if(rgb[0] < 100 && rgb[1] < 100 && rgb[2] < 100) return COLOR_BLACK;
+  else if(rgb[1] > rgb[0] && rgb[1] > rgb[0]) return COLOR_GREEN;
 
   return COLOR_WHITE;
 }
@@ -66,11 +70,11 @@ uint8_t* LineArray()
 {
   uint8_t line[5] = {0, 0, 0, 0, 0};
 
-  line[0] = analogRead(LINE_ARRAY_LL) + LINE_CALIBRATION[0];
-  line[1] = analogRead(LINE_ARRAY_L) + LINE_CALIBRATION[1];
-  line[2] = analogRead(LINE_ARRAY_C) + LINE_CALIBRATION[2];
-  line[3] = analogRead(LINE_ARRAY_R) + LINE_CALIBRATION[3];
-  line[4] = analogRead(LINE_ARRAY_RR) + LINE_CALIBRATION[4];
+  line[0] = analogRead(LINE_ARRAY_LL);
+  line[1] = analogRead(LINE_ARRAY_L);
+  line[2] = analogRead(LINE_ARRAY_C);
+  line[3] = analogRead(LINE_ARRAY_R);
+  line[4] = analogRead(LINE_ARRAY_RR);
 
   return line;
 }
@@ -78,17 +82,14 @@ uint8_t* LineArray()
 uint8_t* LineColors()
 {
   uint8_t* lineArray = LineArray();
-  uint8_t limits[5] = {0, 0, 0, 0, 0};
   
   for(int i = 0; i < 5; i++)
   {
-    if(lineArray[i] >= LINE_LIMIT)
-      limits[i] = COLOR_BLACK;
-    else
-      limits[i] = COLOR_WHITE;
+    if(lineArray[i] == HIGH) lineArray[i] = COLOR_WHITE;
+    else                     lineArray[i] = COLOR_BLACK;
   }
 
-  return limits;
+  return lineArray;
 }
 
 bool LineCompare(uint8_t* colors, String other)
@@ -113,10 +114,10 @@ bool LineCompare(uint8_t* colors, String other)
 uint8_t PID(uint8_t error)
 {
   P = error; // Proportional = Robot position
-  I = I + error; // Integral = Error distance to 0 (Y)
+  I += error; // Integral = Area
   D = error - previous_error; // Derivative = Error Variation (Delta ERROR)
   
-  previous_error=error;
+  previous_error = error;
   return (Kp*P) + (Ki*I) + (Kd*D);
 }
 
