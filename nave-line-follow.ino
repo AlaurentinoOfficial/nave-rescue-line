@@ -90,7 +90,8 @@ void lineFollow()
   }
 
   // PID
-  else {
+  else
+  {
     uint8_t error = CalculateError(lineArray);
     uint8_t pid = PID(error);
 
