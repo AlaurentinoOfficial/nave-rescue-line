@@ -93,8 +93,8 @@ void lineFollow()
     uint8_t error = CalculateError(lineColors);
     uint8_t pid = PID(error);
 
-    uint8_t left = MOVE_POWER[0] - pid;
-    uint8_t right = MOVE_POWER[1] + pid;
+    uint8_t left = MOVE_POWER[0] + pid;
+    uint8_t right = MOVE_POWER[1] - pid;
 
     Motors.MoveFwd(left, right);
   }

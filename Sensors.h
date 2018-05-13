@@ -114,11 +114,11 @@ bool LineCompare(uint8_t* colors, String other)
 uint8_t PID(uint8_t error)
 {
   P = error; // Proportional = Robot position
-  I += error; // Integral = Area
+  I += error; // Integral = Graph Area
   D = error - previous_error; // Derivative = Error Variation (Delta ERROR)
   
   previous_error = error;
-  return (Kp*P) + (Ki*I) + (Kd*D);
+  return uint8_t((Kp*P) + (Ki*I) + (Kd*D));
 }
 
 uint8_t CalculateError(uint8_t* colors)
