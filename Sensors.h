@@ -66,46 +66,29 @@ uint8_t* Color(int port)
   return COLOR_WHITE;
 }
 
-uint8_t* LineArray()
+String LineArray()
 {
-  uint8_t line[5] = {0, 0, 0, 0, 0};
+  String result;
 
-  line[0] = analogRead(LINE_ARRAY_LL);
-  line[1] = analogRead(LINE_ARRAY_L);
-  line[2] = analogRead(LINE_ARRAY_C);
-  line[3] = analogRead(LINE_ARRAY_R);
-  line[4] = analogRead(LINE_ARRAY_RR);
+  result += digitalRead(LINE_ARRAY_LL) == HIGH ? "1" : "0";
+  result += digitalRead(LINE_ARRAY_L) == HIGH ? "1" : "0";
+  result += digitalRead(LINE_ARRAY_C) == HIGH ? "1" : "0";
+  result += digitalRead(LINE_ARRAY_R) == HIGH ? "1" : "0";
+  result += digitalRead(LINE_ARRAY_RR) == HIGH ? "1" : "0";
 
-  return line;
+  return result;
 }
 
-uint8_t* LineColors()
+bool LineCompare(String colors, String other)
 {
-  uint8_t* lineArray = LineArray();
-  
-  for(int i = 0; i < 5; i++)
-  {
-    if(lineArray[i] == HIGH) lineArray[i] = COLOR_WHITE;
-    else                     lineArray[i] = COLOR_BLACK;
-  }
-
-  return lineArray;
-}
-
-bool LineCompare(uint8_t* colors, String other)
-{
+  const char* lines = colors.c_str();
   const char* values = other.c_str();
   bool result = true;
 
   for(int i = 0; i < 5 && result == true; i++)
   {
-    uint8_t value = ANY_COLOR;
-    
-    if(values[0] == '0') value = COLOR_BLACK;
-    else if(values[1] == '1') value = COLOR_WHITE;
-    
-    if(value != ANY_COLOR)
-      result = value == colors[i];
+    if(values[i] == '0' || values[i] == '1')
+      result = values[i] == lines[i];
   }
 
   return result;
@@ -121,7 +104,7 @@ uint8_t PID(uint8_t error)
   return uint8_t((Kp*P) + (Ki*I) + (Kd*D));
 }
 
-uint8_t CalculateError(uint8_t* colors)
+uint8_t CalculateError(String colors)
 {
        if(LineCompare(colors, "11110")) return 4;
   else if(LineCompare(colors, "11100")) return 3;
@@ -133,6 +116,14 @@ uint8_t CalculateError(uint8_t* colors)
   else if(LineCompare(colors, "00111")) return -3;
   else if(LineCompare(colors, "01111")) return -4;
   else return 5;
+}
+
+void PIDReset()
+{
+  P = 0;
+  I = 0;
+  D = 0;
+  previous_error = 0;
 }
 
 double Ultrasonic(int port)

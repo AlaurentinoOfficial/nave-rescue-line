@@ -34,7 +34,7 @@ uint8_t LINE_LIMIT = 600; // Limit of BLACK and WHITE
 uint8_t MOVE_POWER[2] = {200, 200}; // LEFT - RIGHT
 
 double Kp = 1.2; // ERROR FACTOR -> Error multiplier
-double Ki = 1; // INTEGARTION FACTOR -> Period increase multiplier
+double Ki = 1; // INTEGARTION FACTOR -> Area multiplier
 double Kd = 1; // DERIVATIVE FACTOR -> Delta ERROR multiplier
 
 #define ROTATE_90_DEGREES_TIME 2000

@@ -26,6 +26,5 @@ public:
   void MoveBwd(uint8_t left, uint8_t right);
   void Rotate(unsigned short direction, uint8_t power, unsigned long delayTime);
   void Stop();
-  static uint8_t PowerLimit(uint8_t power);
 };
 

@@ -6,17 +6,10 @@ MotorShield::MotorShield(int left1, int left2, int right1, int right2) : motorLe
   this->servo2.attach(10);
 }
 
-static uint8_t MotorShield::PowerLimit(uint8_t power)
-{
-  if(power > 255) return 255;
-  else if(power < 0) return 0;
-  else return power;
-}
-
 void MotorShield::MoveFwd(uint8_t left, uint8_t right)
 {
-  left = MotorShield::PowerLimit(left);
-  right = MotorShield::PowerLimit(right);
+  left = constrain(left, 0, 255);
+  right = constrain(right, 0, 255);
 
   this->motorLeft1.setSpeed(left);
   this->motorLeft1.run(FORWARD);
@@ -33,8 +26,8 @@ void MotorShield::MoveFwd(uint8_t left, uint8_t right)
 
 void MotorShield::MoveBwd(uint8_t left, uint8_t right)
 {
-  left = MotorShield::PowerLimit(left);
-  right = MotorShield::PowerLimit(right);
+  left = constrain(left, 0, 255);
+  right = constrain(right, 0, 255);
   
   this->motorLeft1.setSpeed(left);
   this->motorLeft1.run(BACKWARD);
@@ -52,7 +45,7 @@ void MotorShield::MoveBwd(uint8_t left, uint8_t right)
 void MotorShield::Rotate(unsigned short direc, uint8_t power, unsigned long delayTime)
 {
   this->Stop();
-  power = MotorShield::PowerLimit(power);
+  power = constrain(power, 0, 255);
 
   this->motorRight1.setSpeed(power);
   this->motorRight2.setSpeed(power);

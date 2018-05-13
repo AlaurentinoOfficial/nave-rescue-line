@@ -38,7 +38,7 @@ void loop()
 void lineFollow()
 {
   // Get all line ir array values
-  uint8_t lineColors = LineColors();
+  String lineArray = LineArray();
 
   // Get lazer distance in front
   uint8_t lazer_distance = Lazer();
@@ -50,7 +50,7 @@ void lineFollow()
   }
 
   // CROSS LINE
-  else if(LineCompare(lineColors, "00N00"))
+  else if(LineCompare(lineArray, "00N00"))
   {
     Serial.print("> CROSS LINE > ");
     Motors.Stop();
@@ -76,21 +76,22 @@ void lineFollow()
   }
 
   // BLACK - WHITE
-  else if(LineCompare(lineColors, "00111"))
+  else if(LineCompare(lineArray, "00111"))
   {
     Serial.println("> BLACK - WHITE");
     Motors.Rotate(COUTER_CLOCKWISE, ROTATE_90_DEGREES_TIME, ROTATE_90_DEGREES_PWR); // Rotate a 90 degrees
   }
 
   // WHITE - BLACK
-  else if(LineCompare(lineColors, "11100"))
+  else if(LineCompare(lineArray, "11100"))
   {
     Serial.println("> BLACK - WHITE");
     Motors.Rotate(COUTER_CLOCKWISE, ROTATE_90_DEGREES_TIME, ROTATE_90_DEGREES_PWR); // Rotate a 90 degrees
   }
 
+  // PID
   else {
-    uint8_t error = CalculateError(lineColors);
+    uint8_t error = CalculateError(lineArray);
     uint8_t pid = PID(error);
 
     uint8_t left = MOVE_POWER[0] + pid;
