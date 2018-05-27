@@ -22,7 +22,6 @@
 #define LINE_ARRAY_C 32
 #define LINE_ARRAY_R 33
 #define LINE_ARRAY_RR 34
-uint8_t LINE_LIMIT = 600; // Limit of BLACK and WHITE
 
 
 // **********************
@@ -31,7 +30,7 @@ uint8_t LINE_LIMIT = 600; // Limit of BLACK and WHITE
 
 #define OBSTACLE_MAX_MM 10
 
-uint8_t MOVE_POWER[2] = {200, 200}; // LEFT - RIGHT
+uint8_t MOVE_POWER = 230; // LEFT - RIGHT
 
 double Kp = 10; // ERROR FACTOR -> Error multiplier
 double Ki = 0.1; // INTEGARTION FACTOR -> Area multiplier

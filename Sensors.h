@@ -21,6 +21,7 @@ uint8_t previous_error = 0;
 
 void SensorsSetup()
 {
+  // Color serndor config
   pinMode(S0, OUTPUT);
   pinMode(S1, OUTPUT);
   pinMode(S2, OUTPUT);
@@ -29,6 +30,7 @@ void SensorsSetup()
   digitalWrite(S0,HIGH);
   digitalWrite(S1,LOW);
 
+  // Line array config
   pinMode(LINE_ARRAY_LL, INPUT);
   pinMode(LINE_ARRAY_L, INPUT);
   pinMode(LINE_ARRAY_C, INPUT);
@@ -39,19 +41,23 @@ void SensorsSetup()
 int* ColorRaw(int port)
 {
   pinMode(port, INPUT);
-  
+
+  // Get red value
   digitalWrite(S2,LOW);
   digitalWrite(S3,LOW);
   int red = map(pulseIn(port, LOW), 25,72,255,0);
 
+  // Get green value
   digitalWrite(S2,LOW);
   digitalWrite(S3,LOW);
   int green = map(pulseIn(port, LOW), 30,90,255,0);
 
+  // Get blue value
   digitalWrite(S2,LOW);
   digitalWrite(S3,LOW);
   int blue = map(pulseIn(port, LOW), 25,70,255,0);
 
+  // Return an array
   int colors[] = {red, green, blue};
   return colors;
 }
@@ -101,12 +107,12 @@ uint8_t PID(uint8_t error)
   D = error - previous_error; // Derivative = Error Variation (Delta ERROR)
   
   previous_error = error;
-  return uint8_t((Kp*P) + (Ki*I) + (Kd*D));
+  return (uint8_t) (Kp*P) + (Ki*I) + (Kd*D);
 }
 
 uint8_t CalculateError(String colors)
 {
-       if(LineCompare(colors, "11110")) return 4;
+          if(LineCompare(colors, "11110")) return 4;
   else if(LineCompare(colors, "11100")) return 3;
   else if(LineCompare(colors, "11101")) return 2;
   else if(LineCompare(colors, "11001")) return 1;
@@ -120,6 +126,7 @@ uint8_t CalculateError(String colors)
 
 double Ultrasonic(int port)
 {
+  // Send trigger
   pinMode(port, OUTPUT);
   digitalWrite(port, LOW);
   delayMicroseconds(2);
@@ -129,22 +136,17 @@ double Ultrasonic(int port)
   pinMode(port, INPUT);
   digitalWrite(port, HIGH);
 
+  // Mesuare
   double echo = pulseIn(port, HIGH);
   echo = echo * 0.034 /2;
 
-  if(echo > 200.0)
-    return 200.0;
-  else if(echo < 0.0)
-    return 0.0;
-  else
-    return echo;
+  // Create limit
+  return echo > 200.0 ? 200.0 : echo < 0.0 ? 0.0 : echo;
 }
 
 double Lazer()
 {
   VL53L0X_RangingMeasurementData_t measure;
-    
-  Serial.print("Reading a measurement... ");
   distance.rangingTest(&measure, false); // Pass in 'true' to get debug data printout!
 
   if (measure.RangeStatus != 4) // Phase failures have incorrect data

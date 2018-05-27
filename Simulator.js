@@ -4,7 +4,8 @@ var P = 0,
     previous_error = 0,
     Kp = 10,
     Ki = 0.1,
-    Kd = 10;
+    Kd = 10,
+    MOVE_FWD = 230;
 
 
 function PID(error)
@@ -46,14 +47,26 @@ function CalculateError(colors)
   else return 3;
 }
 
+function constraint(value, min, max)
+{
+  return value > max ? max : value < min ? min : value;
+}
+
 function _convert(_pid)
 {
-  return (200+_pid) + " - " + (200-_pid); 
+  return constraint(MOVE_FWD+_pid, 0, 255) + " - " + constraint(MOVE_FWD-_pid, 0, 255); 
 }
+
 console.log("11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
 console.log("10011> \t| " + _convert(PID(CalculateError("10011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
 console.log("10111> \t| " + _convert(PID(CalculateError("10111"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("00111> \t| " + _convert(PID(CalculateError("10011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("01111> \t| " + _convert(PID(CalculateError("10011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("00111> \t| " + _convert(PID(CalculateError("10011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("10111> \t| " + _convert(PID(CalculateError("10111"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
 console.log("10011> \t| " + _convert(PID(CalculateError("10011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
 console.log("11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
 console.log("11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
 
@@ -71,8 +84,21 @@ console.log("11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " 
 console.log("11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
 
 
-console.log("\n10011> \t| " + _convert(PID(CalculateError("10011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("\n11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("10011> \t| " + _convert(PID(CalculateError("10011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("10111> \t| " + _convert(PID(CalculateError("10111"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("00111> \t| " + _convert(PID(CalculateError("10011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("01111> \t| " + _convert(PID(CalculateError("10011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("00111> \t| " + _convert(PID(CalculateError("10011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
 console.log("10111> \t| " + _convert(PID(CalculateError("10111"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
 console.log("10011> \t| " + _convert(PID(CalculateError("10011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+
+console.log("\n11110> \t| " + _convert(PID(CalculateError("11110"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("11100> \t| " + _convert(PID(CalculateError("11100"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
+console.log("11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
 console.log("11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
 console.log("11011> \t| " + _convert(PID(CalculateError("11011"))) + "\t| P = " + P + " \t | I = " + I + "\t| D = " + D);
