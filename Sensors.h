@@ -38,36 +38,32 @@ void SensorsSetup()
   pinMode(LINE_ARRAY_RR, INPUT);
 }
 
-int* ColorRaw(int port)
+void ColorRaw(uint8_t **out, int port)
 {
   pinMode(port, INPUT);
 
   // Get red value
   digitalWrite(S2,LOW);
   digitalWrite(S3,LOW);
-  int red = map(pulseIn(port, LOW), 25,72,255,0);
+  out[0] = pulseIn(port, LOW);
 
   // Get green value
-  digitalWrite(S2,LOW);
-  digitalWrite(S3,LOW);
-  int green = map(pulseIn(port, LOW), 30,90,255,0);
+  digitalWrite(S2,HIGH);
+  digitalWrite(S3,HIGH);
+  out[1] = pulseIn(port, LOW);
 
   // Get blue value
   digitalWrite(S2,LOW);
-  digitalWrite(S3,LOW);
-  int blue = map(pulseIn(port, LOW), 25,70,255,0);
-
-  // Return an array
-  int colors[] = {red, green, blue};
-  return colors;
+  digitalWrite(S3,HIGH);
+  out[2] = pulseIn(port, LOW);
 }
 
-uint8_t* Color(int port)
+uint8_t Color(int port)
 {
-  int* rgb = ColorRaw(port);
-
-  if(rgb[0] < 100 && rgb[1] < 100 && rgb[2] < 100) return COLOR_BLACK;
-  else if(rgb[1] > rgb[0] && rgb[1] > rgb[0]) return COLOR_GREEN;
+//  uint8_t* rgb = ColorRaw(port);
+//
+//  if(rgb[0] < 100 && rgb[1] < 100 && rgb[2] < 100) return COLOR_BLACK;
+//  else if(rgb[1] > rgb[0] && rgb[1] > rgb[0]) return COLOR_GREEN;
 
   return COLOR_WHITE;
 }
