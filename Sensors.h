@@ -45,25 +45,26 @@ void ColorRaw(uint8_t **out, int port)
   // Get red value
   digitalWrite(S2,LOW);
   digitalWrite(S3,LOW);
-  out[0] = pulseIn(port, LOW);
+  out[0] = map(pulseIn(port, LOW), 25,72,255,0);
 
   // Get green value
   digitalWrite(S2,HIGH);
   digitalWrite(S3,HIGH);
-  out[1] = pulseIn(port, LOW);
+  out[1] = map(pulseIn(port, LOW), 30,90,255,0);
 
   // Get blue value
   digitalWrite(S2,LOW);
   digitalWrite(S3,HIGH);
-  out[2] = pulseIn(port, LOW);
+  out[2] = map(pulseIn(port, LOW), 25,70,255,0);
 }
 
 uint8_t Color(int port)
 {
-//  uint8_t* rgb = ColorRaw(port);
-//
-//  if(rgb[0] < 100 && rgb[1] < 100 && rgb[2] < 100) return COLOR_BLACK;
-//  else if(rgb[1] > rgb[0] && rgb[1] > rgb[0]) return COLOR_GREEN;
+  uint8_t* rgb;
+  ColorRaw(rgb, port);
+
+  if(rgb[0] < 100 && rgb[1] < 100 && rgb[2] < 100) return COLOR_BLACK;
+  else if(rgb[1] > rgb[0] && rgb[1] > rgb[0]) return COLOR_GREEN;
 
   return COLOR_WHITE;
 }
@@ -108,7 +109,7 @@ uint8_t PID(uint8_t error)
 
 uint8_t CalculateError(String colors)
 {
-          if(LineCompare(colors, "11110")) return 4;
+       if(LineCompare(colors, "11110")) return 4;
   else if(LineCompare(colors, "11100")) return 3;
   else if(LineCompare(colors, "11101")) return 2;
   else if(LineCompare(colors, "11001")) return 1;
