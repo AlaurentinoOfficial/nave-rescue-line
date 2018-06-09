@@ -1,4 +1,3 @@
-
 // **********************
 //         PORTS
 // **********************
@@ -25,9 +24,17 @@
 
 
 // **********************
+//         COLORS
+// **********************
+#define COLOR_WHITE 0
+#define COLOR_GREEN 1
+#define COLOR_BLACK 2
+#define ANY_COLOR -1
+
+
+// **********************
 //        Defines
 // **********************
-
 #define OBSTACLE_MAX_MM 10
 
 uint8_t MOVE_POWER = 230; // LEFT - RIGHT

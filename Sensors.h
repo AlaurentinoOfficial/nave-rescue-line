@@ -7,12 +7,8 @@
 #include <Adafruit_VL53L0X.h>
 #include "Values.h"
 
-#define COLOR_WHITE 0
-#define COLOR_GREEN 1
-#define COLOR_BLACK 2
-#define ANY_COLOR -1
-
 Adafruit_VL53L0X distance = Adafruit_VL53L0X();
+VL53L0X_RangingMeasurementData_t measure;
 
 uint8_t P = 0;
 uint8_t I = 0;
@@ -64,7 +60,7 @@ uint8_t **ColorRaw(int port)
 
 uint8_t Color(int port)
 {
-  uint8_t* rgb = *ColorRaw(rgb, port);
+  uint8_t* rgb = *ColorRaw(port);
 
   if(rgb[0] < 100 && rgb[1] < 100 && rgb[2] < 100) return COLOR_BLACK;
   else if(rgb[1] > rgb[0] && rgb[1] > rgb[0]) return COLOR_GREEN;
@@ -146,7 +142,6 @@ double Ultrasonic(int port)
 
 double Lazer()
 {
-  VL53L0X_RangingMeasurementData_t measure;
   distance.rangingTest(&measure, false); // Pass in 'true' to get debug data printout!
 
   if (measure.RangeStatus != 4) // Phase failures have incorrect data
