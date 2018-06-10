@@ -2,9 +2,9 @@ var P = 0,
     I = 0,
     D = 0,
     previous_error = 0,
-    Kp = 10,
-    Ki = 0.1,
-    Kd = 10,
+    Kp = 1,
+    Ki = 0.2,
+    Kd = 2,
     MOVE_FWD = 230;
 
 

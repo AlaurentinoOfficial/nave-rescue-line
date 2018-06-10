@@ -10,6 +10,8 @@
 #include "MotorShield.h"
 #include "Sensors.h"
 
+#define DEBUG true
+
 bool inRescueArea = false;
 
 // **********************
@@ -35,12 +37,14 @@ void setup()
   // **********************
 
   Serial.begin(9600);
-  Serial.println("steaph/LineFolow-Rescue/OBR\n\n");
+  Serial.println("steaph/rescue-line/OBR\n\n");
 }
 
 void loop()
 {
-  if(!inRescueArea)
+  if(DEBUG)
+    test();
+  else if(!inRescueArea)
     lineFollow();
   else
     rescueArea();
@@ -48,6 +52,103 @@ void loop()
 
 void lineFollow()
 {
+  double lazer = Lazer();
+  uint8_t colorL = Color(COLOR_LEFT);
+  uint8_t colorR = Color(COLOR_RIGHT);
+  String lineArray = LineArray();
+
+  // **********************
+  //       OBSTACLE
+  // **********************
+  if(lazer > 0 && lazer <= OBSTACLE_MAX_MM) {
+    Serial.println("> Obstacle detected");
+    double ultrassonicL = Ultrasonic(ULTRA_LEFT);
+    double ultrassonicR = Ultrasonic(ULTRA_RIGHT);
+  }
+  // **********************
+
+
+  // **********************
+  //     DOUBLE GREEN
+  //       DEAD END
+  // **********************
+  else if(colorL == COLOR_GREEN && colorR == COLOR_GREEN) {
+    Serial.println("> Double GREEN detected");
+
+    // Rotate 180° degrees at clockwise
+    Motors.Rotate(CLOCKWISE, ROTATE_90_DEGREES_PWR, ROTATE_90_DEGREES_TIME * 2);
+
+    ResetPID();
+  }
+  // **********************
+
+  
+  // **********************
+  //      LEFT GREEN
+  // **********************
+  else if(colorL == COLOR_GREEN) {
+    Serial.println("> Left GREEN detected");
+
+    // Rotate 90° degrees couter clockwise
+    Motors.Rotate(COUTER_CLOCKWISE, ROTATE_90_DEGREES_PWR, ROTATE_90_DEGREES_TIME);
+
+    ResetPID();
+  }
+  // **********************
+
+
+  // **********************
+  //      RIGHT GREEN
+  // **********************
+  else if(colorR == COLOR_GREEN) {
+    Serial.println("> Right GREEN detected");
+
+    // Rotate 90° degrees at clockwise
+    Motors.Rotate(CLOCKWISE, ROTATE_90_DEGREES_PWR, ROTATE_90_DEGREES_TIME);
+
+    ResetPID();
+  }
+  // **********************
+
+
+  // **********************
+  //      CROSSROADS
+  // **********************
+  else if (LineCompare(lineArray, "N000N")) {
+    Motors.Move(MOVE_POWER, MOVE_POWER);
+  }
+  // **********************
+
+
+  // **********************
+  //          GAP
+  // **********************
+  else if (LineCompare(lineArray, "11111")) {
+    Motors.Move(MOVE_POWER, MOVE_POWER);
+  }
+  // **********************
+
+
+  // **********************
+  //          PID
+  // **********************
+  else {
+    uint8_t pid_value = PID(CalculateError(lineArray));
+
+    Motors.Move(MOVE_POWER+pid_value, MOVE_POWER-pid_value);
+  }
+  // **********************
+
+  Serial.println("\n");
+  delay(3000);
+}
+
+void rescueArea()
+{
+  // Logic
+}
+
+void test() {
   double lazer = Lazer();
   double ultrassonicL = Ultrasonic(ULTRA_LEFT);
   double ultrassonicR = Ultrasonic(ULTRA_RIGHT);
@@ -63,14 +164,4 @@ void lineFollow()
   Serial.println("Line Array: " + lineArray);
   Serial.println(String("Color Left: ") + String(colorL[0]) + " " + String(colorL[1]) + " " + String(colorL[2]));
   Serial.println(String("Color Right: ") + String(colorR[0]) + " " + String(colorR[1]) + " " + String(colorR[2]));
-
-  Motors.Move(-200, 200);
-
-  Serial.println("\n");
-  delay(3000);
-}
-
-void rescueArea()
-{
-  // Logic
 }

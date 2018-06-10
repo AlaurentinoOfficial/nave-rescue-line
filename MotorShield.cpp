@@ -73,9 +73,10 @@ void MotorShield::Rotate(unsigned short direc, uint8_t power, unsigned long dela
   }
 
   if(delayTime > 0)
+  {
     delay(delayTime);
-  
-  this->Stop();
+    this->Stop();
+  }
 }
 
 void MotorShield::Stop()
