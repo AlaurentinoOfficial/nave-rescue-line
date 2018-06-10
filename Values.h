@@ -37,15 +37,6 @@
 
 
 // **********************
-//        MODELS
-// **********************
-#define COLOR_WHITE 0
-#define COLOR_GREEN 1
-#define COLOR_BLACK 2
-#define ANY_COLOR -1
-
-
-// **********************
 //        DEFINES
 // **********************
 #define OBSTACLE_MAX_MM 10
