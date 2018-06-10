@@ -62,6 +62,10 @@ void lineFollow()
   // **********************
   if(lazer > 0 && lazer <= OBSTACLE_MAX_MM) {
     Serial.println("> Obstacle detected");
+
+    Motors.Stop();
+    ResetPID();
+    
     double ultrassonicL = Ultrasonic(ULTRA_LEFT);
     double ultrassonicR = Ultrasonic(ULTRA_RIGHT);
   }
@@ -75,10 +79,11 @@ void lineFollow()
   else if(colorL == COLOR_GREEN && colorR == COLOR_GREEN) {
     Serial.println("> Double GREEN detected");
 
+    Motors.Stop();
+    ResetPID();
+
     // Rotate 180° degrees at clockwise
     Motors.Rotate(CLOCKWISE, ROTATE_90_DEGREES_PWR, ROTATE_90_DEGREES_TIME * 2);
-
-    ResetPID();
   }
   // **********************
 
@@ -89,10 +94,11 @@ void lineFollow()
   else if(colorL == COLOR_GREEN) {
     Serial.println("> Left GREEN detected");
 
+    Motors.Stop();
+    ResetPID();
+
     // Rotate 90° degrees couter clockwise
     Motors.Rotate(COUTER_CLOCKWISE, ROTATE_90_DEGREES_PWR, ROTATE_90_DEGREES_TIME);
-
-    ResetPID();
   }
   // **********************
 
@@ -103,10 +109,11 @@ void lineFollow()
   else if(colorR == COLOR_GREEN) {
     Serial.println("> Right GREEN detected");
 
+    Motors.Stop();
+    ResetPID();
+
     // Rotate 90° degrees at clockwise
     Motors.Rotate(CLOCKWISE, ROTATE_90_DEGREES_PWR, ROTATE_90_DEGREES_TIME);
-
-    ResetPID();
   }
   // **********************
 
