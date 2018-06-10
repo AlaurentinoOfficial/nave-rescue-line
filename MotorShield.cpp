@@ -1,3 +1,12 @@
+/*
+ * ETE Cícero Dias - NAVE Recife
+ * Steaph Copyright
+ * Authors: Anderson Laurentino
+ * 
+ * That code is resposable to control the best robot
+ * of the OBR and Robocup Jr Rescue Line
+ */
+ 
 #include "MotorShield.h"
 
 MotorShield::MotorShield(uint8_t *motors, uint8_t *servos) : motorLeft1(motors[0]), motorLeft2(motors[1]), motorRight1(motors[2]), motorRight2(motors[3])
