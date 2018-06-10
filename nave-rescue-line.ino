@@ -10,7 +10,7 @@
 #include "MotorShield.h"
 #include "Sensors.h"
 
-#define DEBUG true
+#define DEBUG false
 
 bool inRescueArea = false;
 
@@ -145,9 +145,6 @@ void lineFollow()
     Motors.Move(MOVE_POWER+pid_value, MOVE_POWER-pid_value);
   }
   // **********************
-
-  Serial.println("\n");
-  delay(3000);
 }
 
 void rescueArea()
@@ -171,4 +168,7 @@ void test() {
   Serial.println("Line Array: " + lineArray);
   Serial.println(String("Color Left: ") + String(colorL[0]) + " " + String(colorL[1]) + " " + String(colorL[2]));
   Serial.println(String("Color Right: ") + String(colorR[0]) + " " + String(colorR[1]) + " " + String(colorR[2]));
+
+  Serial.println("\n");
+  delay(3000);
 }

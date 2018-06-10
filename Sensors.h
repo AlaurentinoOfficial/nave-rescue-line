@@ -49,17 +49,17 @@ uint8_t **ColorRaw(int port)
   // Get red value
   digitalWrite(S2,LOW);
   digitalWrite(S3,LOW);
-  _out[0] = map(pulseIn(port, LOW), 25,72,255,0);
+  _out[0] = pulseIn(port, LOW);
 
   // Get green value
   digitalWrite(S2,HIGH);
   digitalWrite(S3,HIGH);
-  _out[1] = map(pulseIn(port, LOW), 30,90,255,0);
+  _out[1] = pulseIn(port, LOW);
 
   // Get blue value
   digitalWrite(S2,LOW);
   digitalWrite(S3,HIGH);
-  _out[2] = map(pulseIn(port, LOW), 25,70,255,0);
+  _out[2] = pulseIn(port, LOW);
   
   return &_out;
 }
@@ -70,8 +70,8 @@ uint8_t Color(int port)
 {
   rgb = *ColorRaw(port);
 
-  if(rgb[0] < 100 && rgb[1] < 100 && rgb[2] < 100) return COLOR_BLACK;
-  else if(rgb[1] - rgb[0] > 20 && rgb[1] - rgb[0] > 20) return COLOR_GREEN;
+  if(rgb[0] > 170 && rgb[1] > 170 && rgb[2] > 170) return COLOR_BLACK;
+  else if(rgb[0] - rgb[1] > 20 && rgb[3] - rgb[1] > 20) return COLOR_GREEN;
 
   return COLOR_WHITE;
 }
