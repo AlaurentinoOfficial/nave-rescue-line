@@ -6,44 +6,60 @@
 
 #include <Adafruit_VL53L0X.h>
 
-
 // **********************
-//     IR LINE ARRAY
+//   SETUP THE SENSORS
 // **********************
-#define COLOR_WHITE 0
-#define COLOR_GREEN 1
-#define COLOR_BLACK 2
-#define ANY_COLOR -1
-
-// Mesuare the RGB color in the sensor
-uint8_t **ColorRaw(int port)
+void SetupSensors()
 {
-  pinMode(port, INPUT);
+  pinMode(S0, OUTPUT);
+  pinMode(S1, OUTPUT);
+  pinMode(S2, OUTPUT);
+  pinMode(S3, OUTPUT);
+  pinMode(COLOR_LEFT, INPUT);
+  pinMode(COLOR_RIGHT, INPUT);
   
-  uint8_t *out;
+  digitalWrite(S0,HIGH);
+  digitalWrite(S1,LOW);
+  
+  pinMode(LINE_ARRAY_LL, INPUT);
+  pinMode(LINE_ARRAY_L, INPUT);
+  pinMode(LINE_ARRAY_C, INPUT);
+  pinMode(LINE_ARRAY_R, INPUT);
+  pinMode(LINE_ARRAY_RR, INPUT);
+}
+// **********************
 
+
+// **********************
+//      RGB COLOR
+// **********************
+// Mesuare the RGB color in the sensor
+uint8_t *_out;
+uint8_t **ColorRaw(int port)
+{ 
   // Get red value
   digitalWrite(S2,LOW);
   digitalWrite(S3,LOW);
-  out[0] = map(pulseIn(port, LOW), 25,72,255,0);
+  _out[0] = map(pulseIn(port, LOW), 25,72,255,0);
 
   // Get green value
   digitalWrite(S2,HIGH);
   digitalWrite(S3,HIGH);
-  out[1] = map(pulseIn(port, LOW), 30,90,255,0);
+  _out[1] = map(pulseIn(port, LOW), 30,90,255,0);
 
   // Get blue value
   digitalWrite(S2,LOW);
   digitalWrite(S3,HIGH);
-  out[2] = map(pulseIn(port, LOW), 25,70,255,0);
+  _out[2] = map(pulseIn(port, LOW), 25,70,255,0);
   
-  return &out;
+  return &_out;
 }
 
 // Analyze the colors and try distinguish the color
+uint8_t *rgb;
 uint8_t Color(int port)
 {
-  uint8_t* rgb = *ColorRaw(port);
+  rgb = *ColorRaw(port);
 
   if(rgb[0] < 100 && rgb[1] < 100 && rgb[2] < 100) return COLOR_BLACK;
   else if(rgb[1] > rgb[0] && rgb[1] > rgb[0]) return COLOR_GREEN;

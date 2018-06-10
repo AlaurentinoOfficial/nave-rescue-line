@@ -25,19 +25,7 @@ void setup()
   // **********************
   //    SETUP THE SENSORS
   // **********************
-  pinMode(S0, OUTPUT);
-  pinMode(S1, OUTPUT);
-  pinMode(S2, OUTPUT);
-  pinMode(S3, OUTPUT);
-
-  digitalWrite(S0,HIGH);
-  digitalWrite(S1,LOW);
-
-  pinMode(LINE_ARRAY_LL, INPUT);
-  pinMode(LINE_ARRAY_L, INPUT);
-  pinMode(LINE_ARRAY_C, INPUT);
-  pinMode(LINE_ARRAY_R, INPUT);
-  pinMode(LINE_ARRAY_RR, INPUT);
+  SetupSensors();
   // **********************
 
   // **********************
