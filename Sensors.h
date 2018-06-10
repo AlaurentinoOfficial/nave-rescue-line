@@ -71,7 +71,7 @@ uint8_t Color(int port)
   rgb = *ColorRaw(port);
 
   if(rgb[0] < 100 && rgb[1] < 100 && rgb[2] < 100) return COLOR_BLACK;
-  else if(rgb[1] > rgb[0] && rgb[1] > rgb[0]) return COLOR_GREEN;
+  else if(rgb[1] - rgb[0] > 20 && rgb[1] - rgb[0] > 20) return COLOR_GREEN;
 
   return COLOR_WHITE;
 }
