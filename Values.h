@@ -39,9 +39,9 @@
 
 uint8_t MOVE_POWER = 230; // LEFT - RIGHT
 
-double Kp = 10; // ERROR FACTOR -> Error multiplier
-double Ki = 0.1; // INTEGARTION FACTOR -> Area multiplier
-double Kd = 10; // DERIVATIVE FACTOR -> Delta ERROR multiplier
+double Kp = 1; // ERROR FACTOR -> Error multiplier
+double Ki = 1; // INTEGARTION FACTOR -> Area multiplier
+double Kd = 1; // DERIVATIVE FACTOR -> Delta ERROR multiplier
 
 #define ROTATE_90_DEGREES_TIME 2000
 #define ROTATE_90_DEGREES_PWR 200
