@@ -5,35 +5,17 @@
 #endif
 
 #include <Adafruit_VL53L0X.h>
-#include "Values.h"
 
-Adafruit_VL53L0X distance = Adafruit_VL53L0X();
-VL53L0X_RangingMeasurementData_t measure;
 
-uint8_t P = 0;
-uint8_t I = 0;
-uint8_t D = 0;
-uint8_t previous_error = 0;
+// **********************
+//     IR LINE ARRAY
+// **********************
+#define COLOR_WHITE 0
+#define COLOR_GREEN 1
+#define COLOR_BLACK 2
+#define ANY_COLOR -1
 
-void SensorsSetup()
-{
-  // Color serndor config
-  pinMode(S0, OUTPUT);
-  pinMode(S1, OUTPUT);
-  pinMode(S2, OUTPUT);
-  pinMode(S3, OUTPUT);
-
-  digitalWrite(S0,HIGH);
-  digitalWrite(S1,LOW);
-
-  // Line array config
-  pinMode(LINE_ARRAY_LL, INPUT);
-  pinMode(LINE_ARRAY_L, INPUT);
-  pinMode(LINE_ARRAY_C, INPUT);
-  pinMode(LINE_ARRAY_R, INPUT);
-  pinMode(LINE_ARRAY_RR, INPUT);
-}
-
+// Mesuare the RGB color in the sensor
 uint8_t **ColorRaw(int port)
 {
   pinMode(port, INPUT);
@@ -58,6 +40,7 @@ uint8_t **ColorRaw(int port)
   return &out;
 }
 
+// Analyze the colors and try distinguish the color
 uint8_t Color(int port)
 {
   uint8_t* rgb = *ColorRaw(port);
@@ -67,7 +50,13 @@ uint8_t Color(int port)
 
   return COLOR_WHITE;
 }
+// **********************
 
+
+// **********************
+//     IR LINE ARRAY
+// **********************
+// Get last value of the IR sensors
 String LineArray()
 {
   String result;
@@ -81,6 +70,7 @@ String LineArray()
   return result;
 }
 
+// Compare twice ir line arrays
 bool LineCompare(String colors, String other)
 {
   const char* lines = colors.c_str();
@@ -95,7 +85,18 @@ bool LineCompare(String colors, String other)
 
   return result;
 }
+// **********************
 
+
+// **********************
+//          PID
+// **********************
+uint8_t P = 0;
+uint8_t I = 0;
+uint8_t D = 0;
+uint8_t previous_error = 0;
+
+// PID Function
 uint8_t PID(uint8_t error)
 {
   P = error; // Proportional = Robot position
@@ -106,6 +107,7 @@ uint8_t PID(uint8_t error)
   return (uint8_t) (Kp*P) + (Ki*I) + (Kd*D);
 }
 
+// Measure the error
 uint8_t CalculateError(String colors)
 {
        if(LineCompare(colors, "11110")) return 4;
@@ -119,7 +121,32 @@ uint8_t CalculateError(String colors)
   else if(LineCompare(colors, "01111")) return -4;
   else return 5;
 }
+// **********************
 
+
+// **********************
+//          LAZER
+// **********************
+Adafruit_VL53L0X distance = Adafruit_VL53L0X();
+VL53L0X_RangingMeasurementData_t measure;
+
+double Lazer()
+{
+  // Pass in 'true' to get debug data printout!
+  distance.rangingTest(&measure, false);
+
+  // Phase failures have incorrect data
+  if (measure.RangeStatus != 4)
+    return -1;
+
+  return measure.RangeMilliMeter;
+}
+// **********************
+
+
+// **********************
+//       ULTRASONIC
+// **********************
 double Ultrasonic(int port)
 {
   // Send trigger
@@ -139,13 +166,4 @@ double Ultrasonic(int port)
   // Create limit
   return echo > 200.0 ? 200.0 : echo < 0.0 ? 0.0 : echo;
 }
-
-double Lazer()
-{
-  distance.rangingTest(&measure, false); // Pass in 'true' to get debug data printout!
-
-  if (measure.RangeStatus != 4) // Phase failures have incorrect data
-    return -1;
-
-  return measure.RangeMilliMeter;
-}
+// **********************

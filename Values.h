@@ -6,6 +6,10 @@
 #define MOTOR_RIGHT1 3
 #define MOTOR_RIGHT2 4
 
+#define SERVO_TRIGGER_1 9
+#define SERVO_TRIGGER_2 10
+#define SERVO_TRIGGER_3 2
+
 #define ULTRA_LEFT 22
 #define ULTRA_RIGHT 23
 
@@ -21,16 +25,6 @@
 #define LINE_ARRAY_C 32
 #define LINE_ARRAY_R 33
 #define LINE_ARRAY_RR 34
-
-
-// **********************
-//         COLORS
-// **********************
-#define COLOR_WHITE 0
-#define COLOR_GREEN 1
-#define COLOR_BLACK 2
-#define ANY_COLOR -1
-
 
 // **********************
 //        Defines

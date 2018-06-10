@@ -6,22 +6,45 @@
  * That code is resposable to control the best robot
  * of the OBR and Robocup Jr Rescue Line
  */
-
+#include "Values.h"
 #include "MotorShield.h"
 #include "Sensors.h"
 
 bool inRescueArea = false;
 
-// Motor map
-MotorShield Motors(MOTOR_LEFT1, MOTOR_LEFT2, MOTOR_RIGHT1, MOTOR_RIGHT2);
+// **********************
+//        MOTOR MAP
+// **********************
+uint8_t motors[4] = {MOTOR_LEFT1, MOTOR_LEFT2, MOTOR_RIGHT1, MOTOR_RIGHT2};
+uint8_t servos[3] = {SERVO_TRIGGER_1, SERVO_TRIGGER_2, SERVO_TRIGGER_3};
+MotorShield Motors(motors, servos);
+// **********************
 
 void setup()
 {
-  // Setup the sensors
-  SensorsSetup();
+  // **********************
+  //    SETUP THE SENSORS
+  // **********************
+  pinMode(S0, OUTPUT);
+  pinMode(S1, OUTPUT);
+  pinMode(S2, OUTPUT);
+  pinMode(S3, OUTPUT);
 
-  // Configure the motors
+  digitalWrite(S0,HIGH);
+  digitalWrite(S1,LOW);
+
+  pinMode(LINE_ARRAY_LL, INPUT);
+  pinMode(LINE_ARRAY_L, INPUT);
+  pinMode(LINE_ARRAY_C, INPUT);
+  pinMode(LINE_ARRAY_R, INPUT);
+  pinMode(LINE_ARRAY_RR, INPUT);
+  // **********************
+
+  // **********************
+  //    SETUP THE MOT0RS
+  // **********************
   Motors.Stop();
+  // **********************
 
   Serial.begin(9600);
   Serial.println("steaph/LineFolow-Rescue/OBR\n\n");
@@ -52,6 +75,8 @@ void lineFollow()
   Serial.println("Line Array: " + lineArray);
   Serial.println(String("Color Left: ") + String(colorL[0]) + " " + String(colorL[1]) + " " + String(colorL[2]));
   Serial.println(String("Color Right: ") + String(colorR[0]) + " " + String(colorR[1]) + " " + String(colorR[2]));
+
+  Motors.Move(-200, 200);
 
   Serial.println("\n");
   delay(3000);

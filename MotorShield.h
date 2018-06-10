@@ -19,10 +19,12 @@ public:
   AF_DCMotor motorLeft2;
   Servo servo1;
   Servo servo2;
+  Servo servo3;
 
-  MotorShield(int left1, int left2, int right1, int right2);
+  MotorShield(uint8_t *motors, uint8_t *servos);
   void Setup();
-  void MoveFwd(uint8_t left, uint8_t right);
+  void Move(uint8_t left, uint8_t right);
+  void MoveAtTime(uint8_t left, uint8_t right, long delayTime = 0);
   void MoveBwd(uint8_t left, uint8_t right);
   void Rotate(unsigned short direction, uint8_t power, unsigned long delayTime);
   void Stop();
