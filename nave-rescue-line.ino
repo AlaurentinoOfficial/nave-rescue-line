@@ -60,14 +60,15 @@ void lineFollow()
 	// **********************
 	//       OBSTACLE
 	// **********************
-	if(lazer > 0 && lazer <= OBSTACLE_MAX_MM) {
+	if(lazer > 0 && lazer <= OBSTACLE_MAX_MM)
+	{
 		Serial.println("> Obstacle detected");
 
 		Motors.Stop();
 		ResetPID();
     
-		double ultrassonicL = Ultrasonic(ULTRA_LEFT);
-		double ultrassonicR = Ultrasonic(ULTRA_RIGHT);
+		double ultrasonicL = Ultrasonic(ULTRA_LEFT);
+		double ultrasonicR = Ultrasonic(ULTRA_RIGHT);
 	}
 	// **********************
 
@@ -76,7 +77,8 @@ void lineFollow()
 	//     DOUBLE GREEN
 	//       DEAD END
 	// **********************
-	else if(colorL == COLOR_GREEN && colorR == COLOR_GREEN) {
+	else if(colorL == COLOR_GREEN && colorR == COLOR_GREEN)
+	{
 		Serial.println("> Double GREEN detected");
 
 		Motors.Stop();
@@ -91,7 +93,8 @@ void lineFollow()
 	// **********************
 	//      LEFT GREEN
 	// **********************
-	else if(colorL == COLOR_GREEN) {
+	else if(colorL == COLOR_GREEN)
+	{
 		Serial.println("> Left GREEN detected");
 
 		Motors.Stop();
@@ -106,7 +109,8 @@ void lineFollow()
 	// **********************
 	//      RIGHT GREEN
 	// **********************
-	else if(colorR == COLOR_GREEN) {
+	else if(colorR == COLOR_GREEN)
+	{
 		Serial.println("> Right GREEN detected");
 
 		Motors.Stop();
@@ -133,12 +137,10 @@ void lineFollow()
 
 
 	// **********************
-
-
-	// **********************
 	//          PID
 	// **********************
-	else {
+	else
+	{
 		// Calculate the pid value
 		uint8_t pid_value = PID(CalculateError(lineArray));
 
@@ -153,7 +155,8 @@ void rescueArea()
 	// Logic
 }
 
-void test() {
+void test()
+{
 	double lazer = Lazer();
 	double ultrassonicL = Ultrasonic(ULTRA_LEFT);
 	double ultrassonicR = Ultrasonic(ULTRA_RIGHT);

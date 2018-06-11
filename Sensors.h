@@ -137,7 +137,8 @@ uint8_t PID(uint8_t error)
 	return (uint8_t) (Kp*P) + (Ki*I) + (Kd*D);
 }
 
-void ResetPID() {
+void ResetPID()
+{
 	P = 0;
 	I = 0;
 	D = 0;
