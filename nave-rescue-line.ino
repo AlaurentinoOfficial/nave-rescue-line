@@ -10,7 +10,7 @@
 #include "MotorShield.h"
 #include "Sensors.h"
 
-#define DEBUG false
+#define DEBUG true
 
 bool inRescueArea = false;
 
@@ -42,12 +42,7 @@ void setup()
 
 void loop()
 {
-	if(DEBUG)
-		test();
-	else if(!inRescueArea)
-		lineFollow();
-	else
-		rescueArea();
+	test();
 }
 
 void lineFollow()
@@ -89,7 +84,7 @@ void lineFollow()
 	}
 	// **********************
 
-  
+	
 	// **********************
 	//      LEFT GREEN
 	// **********************
@@ -124,12 +119,20 @@ void lineFollow()
 
 	// **********************
 	//      CROSSROADS
-	//         GAP
 	// **********************
-	else if (LineCompare(lineArray, "N000N") || // Crossroad
-			 LineCompare(lineArray, "000NN") || // Crossroad
-			 LineCompare(lineArray, "NN000") || // Crossroad
-			 LineCompare(lineArray, "11111"))   // GAP
+	else if (LineCompare(lineArray, "N000N") ||
+			 LineCompare(lineArray, "000NN") ||
+			 LineCompare(lineArray, "NN000"))
+	{
+		Motors.Move(MOVE_POWER, MOVE_POWER);
+	}
+	// **********************
+
+
+	// **********************
+	//          GAP
+	// **********************
+	else if (LineCompare(lineArray, "11111"))
 	{
 		Motors.Move(MOVE_POWER, MOVE_POWER);
 	}
@@ -145,7 +148,7 @@ void lineFollow()
 		uint8_t pid_value = PID(CalculateError(lineArray));
 
 		// Move the move according the pid level
-		Motors.Move(MOVE_POWER+pid_value, MOVE_POWER-pid_value);
+		Motors.Move(200 + pid_value, 200 - pid_value);
 	}
 	// **********************
 }
@@ -157,22 +160,15 @@ void rescueArea()
 
 void test()
 {
-	double lazer = Lazer();
-	double ultrassonicL = Ultrasonic(ULTRA_LEFT);
-	double ultrassonicR = Ultrasonic(ULTRA_RIGHT);
+	RGB colorL;
+	RGB colorR;
 
-	String lineArray = LineArray();
-	uint8_t* colorL = *ColorRaw(COLOR_LEFT);
-	uint8_t* colorR = *ColorRaw(COLOR_RIGHT);
+	ColorRaw(&colorL, COLOR_LEFT);
+	ColorRaw(&colorR, COLOR_RIGHT);
 
-	Serial.println(String("Lazer: ") + String(lazer));
-	Serial.println(String("Ultrassonic left: ") + String(ultrassonicL));
-	Serial.println(String("Ultrassonic right: ") + String(ultrassonicR));
-
-	Serial.println("Line Array: " + lineArray);
-	Serial.println(String("Color Left: ") + String(colorL[0]) + " " + String(colorL[1]) + " " + String(colorL[2]));
-	Serial.println(String("Color Right: ") + String(colorR[0]) + " " + String(colorR[1]) + " " + String(colorR[2]));
+	Serial.print(colorR.red); Serial.print(", "); + Serial.print(colorR.green); Serial.print(", "); + Serial.println(colorR.blue);
+	Serial.print(colorL.red); Serial.print(", "); + Serial.print(colorL.green); Serial.print(", "); + Serial.println(colorL.blue);
 
 	Serial.println("\n");
-	delay(3000);
+	delay(300);
 }

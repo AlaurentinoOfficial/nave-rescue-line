@@ -47,36 +47,39 @@ void SetupSensors()
 // **********************
 //      RGB COLOR
 // **********************
+typedef struct __attribute__((packed)) {
+	uint8_t red;
+	uint8_t green;
+	uint8_t blue;
+} RGB;
+
 // Mesuare the RGB color in the sensor
-uint8_t *_out;
-uint8_t **ColorRaw(int port)
+void ColorRaw(RGB * color, uint8_t port)
 { 
 	// Get red value
 	digitalWrite(S2,LOW);
 	digitalWrite(S3,LOW);
-	_out[0] = pulseIn(port, LOW);
-
+	color->red = pulseIn(port, LOW);
+  
 	// Get green value
 	digitalWrite(S2,HIGH);
 	digitalWrite(S3,HIGH);
-	_out[1] = pulseIn(port, LOW);
-
+	color->green = pulseIn(port, LOW);
+  
 	// Get blue value
 	digitalWrite(S2,LOW);
 	digitalWrite(S3,HIGH);
-	_out[2] = pulseIn(port, LOW);
-  
-	return &_out;
+	color->blue = pulseIn(port, LOW);
 }
 
 // Analyze the colors and try distinguish the color
-uint8_t *rgb;
 uint8_t Color(int port)
 {
-	rgb = *ColorRaw(port);
+	RGB color;
+	ColorRaw(&color, port);
 
-	if(rgb[0] > 170 && rgb[1] > 170 && rgb[2] > 170) return COLOR_BLACK;
-	else if(rgb[0] - rgb[1] > 20 && rgb[3] - rgb[1] > 20) return COLOR_GREEN;
+	if(color.red > 170 && color.green > 170 && color.blue > 170) return COLOR_BLACK;
+	else if(color.green - color.red > 20 && color.green - color.blue] > 20) return COLOR_GREEN;
 
 	return COLOR_WHITE;
 }
@@ -148,7 +151,7 @@ void ResetPID()
 // Measure the error
 uint8_t CalculateError(String lineArray)
 {
-		 if(LineCompare(lineArray, "11110")) return 4;
+		   if(LineCompare(lineArray, "11110")) return 4;
 	else if(LineCompare(lineArray, "11100")) return 3;
 	else if(LineCompare(lineArray, "11101")) return 2;
 	else if(LineCompare(lineArray, "11001")) return 1;

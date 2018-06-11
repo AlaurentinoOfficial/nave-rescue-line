@@ -49,3 +49,5 @@ double Kd = 1; // DERIVATIVE FACTOR -> Delta ERROR multiplier
 
 #define ROTATE_90_DEGREES_TIME 2000
 #define ROTATE_90_DEGREES_PWR 200
+
+#define MAX_TIME_GAP 2000

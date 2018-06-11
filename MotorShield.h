@@ -31,10 +31,8 @@ public:
   Servo servo3;
 
   MotorShield(uint8_t *motors, uint8_t *servos);
-  void Setup();
   void Move(uint8_t left, uint8_t right);
   void MoveAtTime(uint8_t left, uint8_t right, long delayTime = 0);
-  void MoveBwd(uint8_t left, uint8_t right);
   void Rotate(unsigned short direction, uint8_t power, unsigned long delayTime);
   void Stop();
 };
