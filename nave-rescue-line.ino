@@ -120,19 +120,18 @@ void lineFollow()
 
 	// **********************
 	//      CROSSROADS
+	//         GAP
 	// **********************
-	else if (LineCompare(lineArray, "N000N")) {
+	else if (LineCompare(lineArray, "N000N") || // Crossroad
+			 LineCompare(lineArray, "000NN") || // Crossroad
+			 LineCompare(lineArray, "NN000") || // Crossroad
+			 LineCompare(lineArray, "11111"))   // GAP
+	{
 		Motors.Move(MOVE_POWER, MOVE_POWER);
 	}
 	// **********************
 
 
-	// **********************
-	//          GAP
-	// **********************
-	else if (LineCompare(lineArray, "11111")) {
-		Motors.Move(MOVE_POWER, MOVE_POWER);
-	}
 	// **********************
 
 
@@ -140,8 +139,10 @@ void lineFollow()
 	//          PID
 	// **********************
 	else {
+		// Calculate the pid value
 		uint8_t pid_value = PID(CalculateError(lineArray));
 
+		// Move the move according the pid level
 		Motors.Move(MOVE_POWER+pid_value, MOVE_POWER-pid_value);
 	}
 	// **********************
