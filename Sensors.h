@@ -78,7 +78,7 @@ uint8_t Color(int port)
 	RGB color;
 	ColorRaw(&color, port);
 
-	if(color.red > 170 && color.green > 170 && color.blue > 170) return COLOR_BLACK;
+	if(color.red > 120 && color.green > 120 && color.blue > 120) return COLOR_BLACK;
 	else if(color.green - color.red > 20 && color.green - color.blue > 20) return COLOR_GREEN;
 
 	return COLOR_WHITE;

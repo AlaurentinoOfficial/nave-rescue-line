@@ -160,13 +160,16 @@ void rescueArea()
 
 void test()
 {
+	String lineArray = LineArray();
+
 	RGB colorL; ColorRaw(&colorL, COLOR_LEFT);
 	RGB colorR; ColorRaw(&colorR, COLOR_RIGHT);
 	uint8_t colorLV = Color(COLOR_LEFT);
 	uint8_t colorRV = Color(COLOR_RIGHT);
 
+	Serial.println(String("Lines: ") + lineArray);
 	Serial.print("Right: "); Serial.print(colorR.red); Serial.print(", "); +Serial.print(colorR.green); Serial.print(", "); +Serial.print(colorR.blue); Serial.print(" | "); Serial.println(colorRV);
-	Serial.print("Left:  "); Serial.print(colorL.red); Serial.print(", "); + Serial.print(colorL.green); Serial.print(", "); + Serial.print(colorL.blue); Serial.print(" | "); Serial.println(colorLV);
+	Serial.print("Left : "); Serial.print(colorL.red); Serial.print(", "); + Serial.print(colorL.green); Serial.print(", "); + Serial.print(colorL.blue); Serial.print(" | "); Serial.println(colorLV);
 
 	Serial.println("\n");
 	delay(300);
