@@ -43,7 +43,8 @@ void setup()
 	// **********************
 	//    SETUP THE SENSORS
 	// **********************
-	SetupSensors();
+	SetupLineArray();
+	SetupColor();
 
 	colorLeft.port = COLOR_LEFT;
 	colorRight.port = COLOR_RIGHT;

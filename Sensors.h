@@ -20,29 +20,6 @@
 #define COLOR_BLACK 2
 #define ANY_COLOR -1
 
-// **********************
-//   SETUP THE SENSORS
-// **********************
-void SetupSensors()
-{
-	pinMode(S0, OUTPUT);
-	pinMode(S1, OUTPUT);
-	pinMode(S2, OUTPUT);
-	pinMode(S3, OUTPUT);
-	pinMode(COLOR_LEFT, INPUT);
-	pinMode(COLOR_RIGHT, INPUT);
-  
-	digitalWrite(S0,HIGH);
-	digitalWrite(S1,LOW);
-  
-	pinMode(LINE_ARRAY_LL, INPUT);
-	pinMode(LINE_ARRAY_L, INPUT);
-	pinMode(LINE_ARRAY_C, INPUT);
-	pinMode(LINE_ARRAY_R, INPUT);
-	pinMode(LINE_ARRAY_RR, INPUT);
-}
-// **********************
-
 
 // **********************
 //      RGB COLOR
@@ -54,6 +31,17 @@ typedef struct __attribute__((packed)) {
 	uint8_t color;
 	uint8_t port;
 } ColorSensor;
+
+void SetupColor()
+{
+	pinMode(S0, OUTPUT);
+	pinMode(S1, OUTPUT);
+	pinMode(S2, OUTPUT);
+	pinMode(S3, OUTPUT);
+
+	digitalWrite(S0, HIGH);
+	digitalWrite(S1, LOW);
+}
 
 // Mesuare the RGB color in the sensor
 void ColorRaw(ColorSensor * s1, ColorSensor * s2)
@@ -94,6 +82,15 @@ void Color(ColorSensor * s1, ColorSensor * s2)
 // **********************
 //     IR LINE ARRAY
 // **********************
+void SetupLineArray()
+{
+	pinMode(LINE_ARRAY_LL, INPUT);
+	pinMode(LINE_ARRAY_L, INPUT);
+	pinMode(LINE_ARRAY_C, INPUT);
+	pinMode(LINE_ARRAY_R, INPUT);
+	pinMode(LINE_ARRAY_RR, INPUT);
+}
+
 // Get last value of the IR sensors
 String LineArray()
 {
