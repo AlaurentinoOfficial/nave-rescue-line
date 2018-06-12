@@ -14,6 +14,22 @@
 
 bool inRescueArea = false;
 
+
+// **********************
+//        SENSORS
+// **********************
+double lazer = 0.0;
+
+String lineArray = "";
+
+ColorSensor colorLeft;
+ColorSensor colorRight;
+
+UltrasonicSensor ultraLeft;
+UltrasonicSensor ultraRight;
+// **********************
+
+
 // **********************
 //        MOTOR MAP
 // **********************
@@ -28,6 +44,12 @@ void setup()
 	//    SETUP THE SENSORS
 	// **********************
 	SetupSensors();
+
+	colorLeft.port = COLOR_LEFT;
+	colorRight.port = COLOR_RIGHT;
+
+	ultraLeft.port = ULTRA_LEFT;
+	ultraRight.port = ULTRA_RIGHT;
 	// **********************
 
 	// **********************
@@ -47,10 +69,9 @@ void loop()
 
 void lineFollow()
 {
-	double lazer = Lazer();
-	uint8_t colorL = Color(COLOR_LEFT);
-	uint8_t colorR = Color(COLOR_RIGHT);
-	String lineArray = LineArray();
+	lazer = Lazer();
+	Color(&colorLeft, &colorRight);
+	lineArray = LineArray();
 
 	// **********************
 	//       OBSTACLE
@@ -62,12 +83,8 @@ void lineFollow()
 		Motors.Stop();
 		ResetPID();
 
-		if (Ultrasonic(ULTRA_LEFT) > Ultrasonic(ULTRA_RIGHT))
-		{
-		}
-		else
-		{
-		}
+		Ultrasonic(&ultraLeft);
+		Ultrasonic(&ultraRight);
 	}
 	// **********************
 
@@ -75,14 +92,14 @@ void lineFollow()
 	// **********************
 	//      GREEN CASES
 	// **********************
-	else if (colorL == COLOR_GREEN || colorR == COLOR_GREEN)
+	else if (colorLeft.color == COLOR_GREEN || colorRight.color == COLOR_GREEN)
 	{
 		Motors.Stop();
 		ResetPID();
 
 		// DOUBLE GREEN
 		// DEAD END
-		if (colorL == COLOR_GREEN && colorR == COLOR_GREEN)
+		if (colorLeft.color == COLOR_GREEN && colorRight.color == COLOR_GREEN)
 		{
 			Serial.println("> Double GREEN detected");
 
@@ -91,7 +108,7 @@ void lineFollow()
 		}
 
 		// LEFT GREEN
-		else if (colorL == COLOR_GREEN)
+		else if (colorLeft.color == COLOR_GREEN)
 		{
 			Serial.println("> Left GREEN detected");
 
@@ -154,16 +171,12 @@ void rescueArea()
 
 void test()
 {
-	String lineArray = LineArray();
-
-	RGB colorL; ColorRaw(&colorL, COLOR_LEFT);
-	RGB colorR; ColorRaw(&colorR, COLOR_RIGHT);
-	uint8_t colorLV = Color(COLOR_LEFT);
-	uint8_t colorRV = Color(COLOR_RIGHT);
+	lineArray = LineArray();
+	Color(&colorLeft, &colorRight);
 
 	Serial.println(String("Lines: ") + lineArray);
-	Serial.print("Right: "); Serial.print(colorR.red); Serial.print(", "); +Serial.print(colorR.green); Serial.print(", "); +Serial.print(colorR.blue); Serial.print(" | "); Serial.println(colorRV);
-	Serial.print("Left : "); Serial.print(colorL.red); Serial.print(", "); + Serial.print(colorL.green); Serial.print(", "); + Serial.print(colorL.blue); Serial.print(" | "); Serial.println(colorLV);
+	Serial.print("Right: "); Serial.print(colorRight.red); Serial.print(", "); +Serial.print(colorRight.green); Serial.print(", "); +Serial.print(colorRight.blue); Serial.print(" | "); Serial.println(colorRight.color);
+	Serial.print("Left : "); Serial.print(colorLeft.red); Serial.print(", "); + Serial.print(colorLeft.green); Serial.print(", "); + Serial.print(colorLeft.blue); Serial.print(" | "); Serial.println(colorLeft.color);
 
 	Serial.println("\n");
 	delay(300);

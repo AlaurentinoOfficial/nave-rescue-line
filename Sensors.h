@@ -51,37 +51,42 @@ typedef struct __attribute__((packed)) {
 	uint8_t red;
 	uint8_t green;
 	uint8_t blue;
-} RGB;
+	uint8_t color;
+	uint8_t port;
+} ColorSensor;
 
 // Mesuare the RGB color in the sensor
-void ColorRaw(RGB * color, uint8_t port)
+void ColorRaw(ColorSensor * s1, ColorSensor * s2)
 { 
+	pinMode(s1->port, INPUT);
+	pinMode(s2->port, INPUT);
+
 	// Get red value
 	digitalWrite(S2,LOW);
 	digitalWrite(S3,LOW);
-	color->red = pulseIn(port, LOW);
+	s1->red = pulseIn(s1->port, LOW);
+	s2->red = pulseIn(s2->port, LOW);
   
 	// Get green value
 	digitalWrite(S2,HIGH);
 	digitalWrite(S3,HIGH);
-	color->green = pulseIn(port, LOW);
+	s1->green = pulseIn(s1->port, LOW);
+	s2->green = pulseIn(s2->port, LOW);
   
 	// Get blue value
 	digitalWrite(S2,LOW);
 	digitalWrite(S3,HIGH);
-	color->blue = pulseIn(port, LOW);
+	s1->blue = pulseIn(s1->port, LOW);
+	s2->blue = pulseIn(s2->port, LOW);
 }
 
 // Analyze the colors and try distinguish the color
-uint8_t Color(int port)
+void Color(ColorSensor * s1, ColorSensor * s2)
 {
-	RGB color;
-	ColorRaw(&color, port);
+	ColorRaw(s1, s2);
 
-	if(color.red > 120 && color.green > 120 && color.blue > 120) return COLOR_BLACK;
-	else if(color.green - color.red > 20 && color.green - color.blue > 20) return COLOR_GREEN;
-
-	return COLOR_WHITE;
+	s1->color = COLOR_WHITE;
+	s2->color = COLOR_WHITE;
 }
 // **********************
 
@@ -188,23 +193,24 @@ double Lazer()
 // **********************
 //       ULTRASONIC
 // **********************
-double Ultrasonic(int port)
+typedef struct __attribute__((packed)) {
+	uint8_t distance;
+	uint8_t port;
+} UltrasonicSensor;
+
+void Ultrasonic(UltrasonicSensor * s1)
 {
 	// Send trigger
-	pinMode(port, OUTPUT);
-	digitalWrite(port, LOW);
+	pinMode(s1->port, OUTPUT);
+	digitalWrite(s1->port, LOW);
 	delayMicroseconds(2);
-	digitalWrite(port, HIGH);
+	digitalWrite(s1->port, HIGH);
 	delayMicroseconds(5);
-	digitalWrite(port, LOW);
-	pinMode(port, INPUT);
-	digitalWrite(port, HIGH);
+	digitalWrite(s1->port, LOW);
+	pinMode(s1->port, INPUT);
+	digitalWrite(s1->port, HIGH);
 
 	// Mesuare
-	double echo = pulseIn(port, HIGH);
-	echo = echo * 0.034 /2;
-
-	// Create limit
-	return constrain(echo, 0, 200);
+	s1->distance = constrain(pulseIn(s1->port, HIGH) * 0.034 / 2, 0, 200);
 }
 // **********************
