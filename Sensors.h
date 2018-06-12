@@ -151,7 +151,7 @@ void ResetPID()
 // Measure the error
 uint8_t CalculateError(String lineArray)
 {
-		   if(LineCompare(lineArray, "11110")) return 4;
+		 if(LineCompare(lineArray, "11110")) return 4;
 	else if(LineCompare(lineArray, "11100")) return 3;
 	else if(LineCompare(lineArray, "11101")) return 2;
 	else if(LineCompare(lineArray, "11001")) return 1;

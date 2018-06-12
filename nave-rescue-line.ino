@@ -61,58 +61,52 @@ void lineFollow()
 
 		Motors.Stop();
 		ResetPID();
-    
-		double ultrasonicL = Ultrasonic(ULTRA_LEFT);
-		double ultrasonicR = Ultrasonic(ULTRA_RIGHT);
+
+		if (Ultrasonic(ULTRA_LEFT) > Ultrasonic(ULTRA_RIGHT))
+		{
+		}
+		else
+		{
+		}
 	}
 	// **********************
 
 
 	// **********************
-	//     DOUBLE GREEN
-	//       DEAD END
+	//      GREEN CASES
 	// **********************
-	else if(colorL == COLOR_GREEN && colorR == COLOR_GREEN)
+	else if (colorL == COLOR_GREEN || colorR == COLOR_GREEN)
 	{
-		Serial.println("> Double GREEN detected");
-
 		Motors.Stop();
 		ResetPID();
 
-		// Rotate 180° degrees at clockwise
-		Motors.Rotate(CLOCKWISE, ROTATE_90_DEGREES_PWR, ROTATE_90_DEGREES_TIME * 2);
-	}
-	// **********************
+		// DOUBLE GREEN
+		// DEAD END
+		if (colorL == COLOR_GREEN && colorR == COLOR_GREEN)
+		{
+			Serial.println("> Double GREEN detected");
 
-	
-	// **********************
-	//      LEFT GREEN
-	// **********************
-	else if(colorL == COLOR_GREEN)
-	{
-		Serial.println("> Left GREEN detected");
+			// Rotate 180° degrees at clockwise
+			Motors.Rotate(CLOCKWISE, ROTATE_90_DEGREES_PWR, ROTATE_90_DEGREES_TIME * 2);
+		}
 
-		Motors.Stop();
-		ResetPID();
+		// LEFT GREEN
+		else if (colorL == COLOR_GREEN)
+		{
+			Serial.println("> Left GREEN detected");
 
-		// Rotate 90° degrees couter clockwise
-		Motors.Rotate(COUTER_CLOCKWISE, ROTATE_90_DEGREES_PWR, ROTATE_90_DEGREES_TIME);
-	}
-	// **********************
+			// Rotate 90° degrees couter clockwise
+			Motors.Rotate(COUTER_CLOCKWISE, ROTATE_90_DEGREES_PWR, ROTATE_90_DEGREES_TIME);
+		}
 
+		// RIGHT GREEN
+		else
+		{
+			Serial.println("> Right GREEN detected");
 
-	// **********************
-	//      RIGHT GREEN
-	// **********************
-	else if(colorR == COLOR_GREEN)
-	{
-		Serial.println("> Right GREEN detected");
-
-		Motors.Stop();
-		ResetPID();
-
-		// Rotate 90° degrees at clockwise
-		Motors.Rotate(CLOCKWISE, ROTATE_90_DEGREES_PWR, ROTATE_90_DEGREES_TIME);
+			// Rotate 90° degrees at clockwise
+			Motors.Rotate(CLOCKWISE, ROTATE_90_DEGREES_PWR, ROTATE_90_DEGREES_TIME);
+		}
 	}
 	// **********************
 
